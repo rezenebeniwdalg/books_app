@@ -13,6 +13,7 @@ class _HomeScrState extends State<HomeScr> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+  
       appBar: AppBar(
 
         leading: Builder(builder: (context)=>Padding(
@@ -21,10 +22,14 @@ class _HomeScrState extends State<HomeScr> {
             onTap: () {
               Scaffold.of(context).openDrawer();
             },
-            child: SvgPicture.asset("assets/audible-svgrepo-com.svg")),
+            child: Icon(Icons.menu,size: 35,)
+            // Image.asset("assets/weblogo.png",scale: 1,),
+            // child: SvgPicture.asset("assets/audible-svgrepo-com.svg")
+            ),
         ),),
         centerTitle: true,
-        title: Text("ONBOOKS",style: TextStyle(fontWeight: FontWeight.w900),),
+        title: Image.asset("assets/logo1.png"),
+        // title: Text("ONBOOKS",style: TextStyle(fontWeight: FontWeight.w900),),
         actions: [
           IconButton(onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchScr()));
@@ -91,9 +96,9 @@ class _HomeScrState extends State<HomeScr> {
           ),
         ),
       ),
-      body: Center(
-        child: SvgPicture.asset("assets/audible-svgrepo-com.svg"),
-      ),
+      body: Container(
+        decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/introbg.jpg",),fit: BoxFit.cover)),
+      )
     );
   }
 }
