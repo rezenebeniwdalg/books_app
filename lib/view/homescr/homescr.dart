@@ -1,17 +1,24 @@
+// import 'dart:js_interop';
+
+import 'package:books_app/view/login/login.dart';
 import 'package:books_app/view/searchscr/searchscr.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScr extends StatefulWidget {
-  const HomeScr({super.key});
+  const HomeScr({super.key,this.emailid});
+  final  emailid;
 
   @override
   State<HomeScr> createState() => _HomeScrState();
 }
 
 class _HomeScrState extends State<HomeScr> {
+   final user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
+   
     return Scaffold(
   
       appBar: AppBar(
@@ -81,17 +88,21 @@ class _HomeScrState extends State<HomeScr> {
         
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
           width: MediaQuery.sizeOf(context).width * .8,
-          child: Column(
+          child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               DrawerHeader(
                 child: UserAccountsDrawerHeader(
                   
                   decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15)),
                   currentAccountPicture: CircleAvatar(radius: 20, backgroundImage: NetworkImage("https://images.pexels.com/photos/2295744/pexels-photo-2295744.jpeg?auto=compress&cs=tinysrgb&w=400"),),
-                  accountName: Text("EBENEZER GLADWIN",style: TextStyle(color: Colors.deepPurpleAccent,fontWeight: FontWeight.bold),),
-                   accountEmail: Text("4ebnzr@gmail.com",style: TextStyle(color: Colors.deepPurpleAccent,fontWeight: FontWeight.bold)))
+                  accountName: Text(user!.uid.toString(),style: TextStyle(color: Colors.deepPurpleAccent,fontWeight: FontWeight.bold),),
+                   accountEmail: Text(user!.email.toString(),style: TextStyle(color: Colors.deepPurpleAccent,fontWeight: FontWeight.bold)))
                  ),
               Center(child: Text("data")),
+              IconButton(onPressed: ()async{
+          await FirebaseAuth.instance.signOut();
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> Login()), (route) => false);
+        }, icon: Icon(Icons.logout))
             ],
           ),
         ),

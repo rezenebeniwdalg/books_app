@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class logcrcontroller with ChangeNotifier{
-  bool isloading = true;
+  bool isloading = false;
  Future <bool> login(
   
   {required BuildContext context, required String email,required String password}

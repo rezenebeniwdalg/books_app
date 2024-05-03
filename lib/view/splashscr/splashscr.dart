@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Image.asset("assets/weblogo.png"),
+        child: Image.asset("assets/weblogo.png",scale: 1.5,),
         // child: SvgPicture.asset( "assets/audible-svgrepo-com.svg",semanticsLabel: "logo",colorFilter: ColorFilter.mode(Colors.deepPurpleAccent, BlendMode.srcIn),height: 200,),
         ),
     );

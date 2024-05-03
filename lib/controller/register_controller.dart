@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // ignore: camel_case_types
 class regscrcontroller with ChangeNotifier{
-  bool isloading = true;
+  bool isloading = false;
  Future <bool> register(
   
   {
@@ -18,6 +18,7 @@ class regscrcontroller with ChangeNotifier{
   final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
     email: email,
     password: password,
+    
     
   );
   if (credential.user?.uid != null) {

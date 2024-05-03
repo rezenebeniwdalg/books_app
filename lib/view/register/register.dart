@@ -23,17 +23,30 @@ class _registerState extends State<register> {
         child: Padding(
           padding: const EdgeInsets.all(25.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+               Image.asset("assets/weblogo.png",scale: 2.5,),
+                SizedBox(height: 20,),
               Container(
-                child: Text("Register"),
+                child: Text("Register",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30)),
               ),
               SizedBox(height: 20,),
               TextFormField(
                 controller: _email,
+                 decoration: InputDecoration(
+                    hintText: "e-mail",
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+                    
+                  ),
               ),
                SizedBox(height: 20,),
               TextFormField(
                 controller: _pass,
+                 decoration: InputDecoration(
+                    hintText: "password",
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+                    
+                  ),
               ),
                SizedBox(height: 20,),
                providerobj.isloading
@@ -49,8 +62,8 @@ class _registerState extends State<register> {
                                 email: _email.text,
                                 password: _pass.text)
                             .then((value) async{
-                              final user = FirebaseAuth.instance.currentUser;
-                              await user?.updateDisplayName("jane q user");
+                              // final user = FirebaseAuth.instance.currentUser;
+                              // await user?.updateDisplayName("jane q user");
                           if (value == true) {
                             // login success
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -63,9 +76,9 @@ class _registerState extends State<register> {
                                 ),
                                 (route) => false);
                           } else {
-                            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            //     backgroundColor: Colors.red,
-                            //     content: Text("Registration Failed")));
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text("Registration Failed")));
                           }
                         });
                       } else {
@@ -78,15 +91,17 @@ class _registerState extends State<register> {
                       child: Text("Register")
                 ),
               ),
+              SizedBox(height: 20,),
               Container(
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("have an account? "),
+                    Text("aleady have an account? ",style: TextStyle(fontSize: 16, color: Colors.black.withOpacity(.6)),),
                     InkWell(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Login()));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Login()));
                       },
-                      child: Text("Login")),
+                      child: Text("Login",style: TextStyle(color: Colors.blue))),
                   ],
                 )
               )
