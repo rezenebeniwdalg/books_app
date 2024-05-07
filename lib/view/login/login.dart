@@ -1,4 +1,6 @@
 import 'package:books_app/controller/login_controller.dart';
+import 'package:books_app/view/admin/admin_home.dart';
+import 'package:books_app/view/botnavbar/navbar.dart';
 import 'package:books_app/view/homescr/homescr.dart';
 import 'package:books_app/view/register/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -60,10 +62,20 @@ class _LoginState extends State<Login> {
                   
                     onPressed: ()async{
                     if(_email.text.isNotEmpty && _pass.text.isNotEmpty){
+
                       context.read<logcrcontroller>().login(context: context, email: _email.text, password: _pass.text).then((value) {
             if (value == true) {
+              if(_email.text == "slmncroae@gmail.com")
+              {
+                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.greenAccent,content: Text("Success")));
+             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> AdminHomeScr(email_id: _email,)), (route) => false);
+              }
+              else{
+              // 
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.greenAccent,content: Text("Success")));
-             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> HomeScr(emailid: _email,)), (route) => false);
+             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> BottomNavBarScreen(emailid: _email,)), (route) => false);
+            // 
+              }
             }else {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               backgroundColor: Colors.red,

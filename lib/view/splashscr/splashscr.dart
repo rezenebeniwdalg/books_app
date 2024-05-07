@@ -1,3 +1,4 @@
+import 'package:books_app/view/botnavbar/navbar.dart';
 import 'package:books_app/view/homescr/homescr.dart';
 import 'package:books_app/view/login/login.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeScr(),
+            builder: (context) => BottomNavBarScreen(),
           ));
       }else{
  Navigator.pushReplacement(
