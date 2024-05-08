@@ -197,6 +197,7 @@ TextEditingController title = TextEditingController();
         children: [
           ElevatedButton(onPressed: ()async{
             final result = await FilePicker.platform.pickFiles();
+            type: FileType.any;
             setState(() {
               
             });
@@ -204,6 +205,7 @@ TextEditingController title = TextEditingController();
               return;
             }
             final file = result.files.first;
+             final storageref = FirebaseStorage.instance.ref();
             var folderref = storageref.child("Books");
             print("name:${file.name}");
             print("name:${file.bytes}");
@@ -218,6 +220,9 @@ TextEditingController title = TextEditingController();
           // await uploadref.putFile(File(result!.path));
             // openFile(file);
           }, child: Text("PICK FILE"),),
+          Container(
+            child: ,
+          ),
           ElevatedButton(onPressed: ()async{
              file = await ImagePicker().pickImage(source: ImageSource.gallery);
                setState(() {
