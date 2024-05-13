@@ -12,10 +12,10 @@ Future<void> main()async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(BooksApp());
+  runApp(MyApp());
 }
-class BooksApp extends StatelessWidget {
-  const BooksApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

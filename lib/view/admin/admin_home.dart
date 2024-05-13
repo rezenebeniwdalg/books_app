@@ -24,7 +24,11 @@ class AdminHomeScr extends StatefulWidget {
 }
 
 class _AdminHomeScrState extends State<AdminHomeScr> {
+  FilePickerResult? result;
+  PlatformFile? pickedfile;
+  File? filetodisplay;
    var currentTabIndex = 0;
+   var bookurl;
   
    final user = FirebaseAuth.instance.currentUser;
      XFile? file;
@@ -204,14 +208,20 @@ TextEditingController title = TextEditingController();
             if (result == null) {
               return;
             }
-            final file = result.files.first;
-             final storageref = FirebaseStorage.instance.ref();
-            var folderref = storageref.child("Books");
-            print("name:${file.name}");
-            print("name:${file.bytes}");
-            print("name:${file.size}");
-            print("name:${file.extension}");
-            print("name:${file.path}");
+             pickedfile = result.files.first;
+             filetodisplay = File(pickedfile!.path.toString());
+             final storagerefb = FirebaseStorage.instance.ref();
+            var folderrefb = storagerefb.child("Books");
+            var uploadrefb = folderrefb.child(pickedfile!.name);
+            await uploadrefb.putFile(File(pickedfile!.path.toString()));
+            url = await uploadrefb.getDownloadURL();
+             bookurl = url;
+            log(url.toString());
+            print("name:${pickedfile?.name}");
+            print("name:${pickedfile?.bytes}");
+            print("name:${pickedfile?.size}");
+            print("name:${pickedfile?.extension}");
+            print("name:${pickedfile?.path}");
             // await saveFilePermanently(file);///
           //    var uniquename = DateTime.now().millisecondsSinceEpoch;
           //    final storageref = FirebaseStorage.instance.ref();
@@ -221,8 +231,14 @@ TextEditingController title = TextEditingController();
             // openFile(file);
           }, child: Text("PICK FILE"),),
           Container(
-            child: ,
+            // child: ,
           ),
+          // if(pickedfile != null)
+          // SizedBox(
+          //   height: 200,
+          //   width: 200,
+          //   child: File.file(filetodisplay!),
+          // ),
           ElevatedButton(onPressed: ()async{
              file = await ImagePicker().pickImage(source: ImageSource.gallery);
                setState(() {
@@ -282,9 +298,10 @@ log(url.toString());
                                     ),
                                  
                   ),
-                   ElevatedButton(onPressed: (){CollectionRef.add({"title": title.text, "auth":author.text,"image":url ?? "","file":file.toString()});
+                   ElevatedButton(onPressed: (){CollectionRef.add({"title": title.text, "auth":author.text,"image":url ?? "","file": bookurl ?? ""});
                 title.clear();
                 author.clear();
+                file == null;
                 
                 
                 }, child: Text("add") ),

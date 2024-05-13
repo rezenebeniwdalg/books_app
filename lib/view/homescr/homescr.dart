@@ -1,5 +1,6 @@
 // import 'dart:js_interop';
 
+import 'package:books_app/view/homescr/tabs/all_tab.dart';
 import 'package:books_app/view/homescr/tabs/for_u_tab.dart';
 import 'package:books_app/view/login/login.dart';
 import 'package:books_app/view/searchscr/searchscr.dart';
@@ -170,8 +171,9 @@ class _HomeScrState extends State<HomeScr> {
                      height: MediaQuery.sizeOf(context).height *.9,
                           child: TabBarView(children: [
                            For_u_tab(),
-                            Container
-                            (decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/introbg.jpg",),fit: BoxFit.cover)),),
+                           All_tab_scr(),
+                            // Container
+                            // (decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/introbg.jpg",),fit: BoxFit.cover)),),
                             Container(decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/introbg.jpg",),fit: BoxFit.cover)),),
                           ]),
                         )
