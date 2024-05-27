@@ -124,7 +124,7 @@ class _HomeScrState extends State<HomeScr> {
               children: [
                 DrawerHeader(
                   child: UserAccountsDrawerHeader(
-                    
+                   
                     decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15)),
                     currentAccountPicture: CircleAvatar(radius: 20, backgroundImage: NetworkImage("https://images.pexels.com/photos/2295744/pexels-photo-2295744.jpeg?auto=compress&cs=tinysrgb&w=400"),),
                     accountName: Text(user!.uid.toString(),style: TextStyle(color: Colors.deepPurpleAccent,fontWeight: FontWeight.bold),),

@@ -301,7 +301,9 @@ log(url.toString());
                    ElevatedButton(onPressed: (){CollectionRef.add({"title": title.text, "auth":author.text,"image":url ?? "","file": bookurl ?? ""});
                 title.clear();
                 author.clear();
-                file == null;
+                url == null;
+                bookurl== null;
+                // Navigator.pop(context);
                 
                 
                 }, child: Text("add") ),

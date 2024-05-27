@@ -96,7 +96,7 @@ class _registerState extends State<register> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("aleady have an account? ",style: TextStyle(fontSize: 16, color: Colors.black.withOpacity(.6)),),
+                    Text("already have an account? ",style: TextStyle(fontSize: 16, color: Colors.black.withOpacity(.6)),),
                     InkWell(
                       onTap: () {
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Login()));

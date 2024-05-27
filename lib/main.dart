@@ -5,6 +5,7 @@ import 'package:books_app/view/splashscr/splashscr.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main()async{
@@ -12,6 +13,8 @@ Future<void> main()async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+ await Hive.initFlutter();
+ await Hive.openBox('recent');
   runApp(MyApp());
 }
 class MyApp extends StatelessWidget {
