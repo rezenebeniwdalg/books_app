@@ -1,5 +1,7 @@
+import 'package:books_app/view/favourite/favourite.dart';
 import 'package:books_app/view/homescr/homescr.dart';
 import 'package:books_app/view/recent/recent.dart';
+import 'package:books_app/view/searchscr/searchscr.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -15,10 +17,8 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
  
   List<Widget> screesList = [
     HomeScr(),
-   Container(
-    color: Colors.amberAccent,
-   ),
-   Container(color: Colors.lightBlueAccent,),
+   SearchScr(),
+  FavTabScreen(),
    recentscr(),
    Container(color: Colors.pinkAccent,)
   ];

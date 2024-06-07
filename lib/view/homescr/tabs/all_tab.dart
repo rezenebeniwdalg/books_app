@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:books_app/view/bookdetails/bookdetails.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -9,7 +10,8 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class All_tab_scr extends StatefulWidget {
-  const All_tab_scr({super.key});
+  const All_tab_scr({super.key,this.email_id});
+  final email_id;
 
   @override
   State<All_tab_scr> createState() => _All_tab_scrState();
@@ -17,6 +19,7 @@ class All_tab_scr extends StatefulWidget {
 
 class _All_tab_scrState extends State<All_tab_scr> {
  String? bookurl;
+  final user = FirebaseAuth.instance.currentUser;
 
   CollectionReference CollectionRef = FirebaseFirestore.instance.collection("books");
   List<Map<String, dynamic>> pdfdata = [];
@@ -30,12 +33,17 @@ pdfdata= pdfres.docs.map((e)=> e.data()).toList();
 setState(() {
   
 });
+// void getpdffav(){
+// 
+  // Query<Map<String, dynamic>> CollectionRef = FirebaseFirestore.instance.collection("books").where("title", isEqualTo: "try");
+// }
 
 }
 @override
 void initState(){
   super.initState();
   getpdf();
+  // getpdffav();
   }
   @override
   Widget build(BuildContext context) {
@@ -61,7 +69,7 @@ void initState(){
                                                     return InkWell(
                                                       onTap: () {
                                                        
-                                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Bookdetails(thumbnail:snapshot.data!.docs[index]['image'] ,title:snapshot.data!.docs[index]['title'] ,author: snapshot.data!.docs[index]['auth'],bookfile:snapshot.data!.docs[index]['file'] ,)));
+                                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Bookdetails(email_id: widget.email_id,thumbnail:snapshot.data!.docs[index]['image'] ,title:snapshot.data!.docs[index]['title'] ,author: snapshot.data!.docs[index]['auth'],bookfile:snapshot.data!.docs[index]['file'] ,bookid: snapshot.data!.docs[index].id)));
                                                       },
                                                       child: Padding(
                                                         padding: const EdgeInsets.all(8.0),

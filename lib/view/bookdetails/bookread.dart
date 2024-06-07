@@ -37,7 +37,8 @@ class _bookreadState extends State<bookread> {
         actions: [
           Tooltip(
             message: 'Wakelock',
-            child: IconButton(icon: Icon((lock == true) ? Icons.lock : Icons.lock_open_outlined),onPressed: _toggleWakelock,))
+            child: IconButton(icon: Icon((lock == true) ? Icons.lock : Icons.lock_open_outlined),onPressed: _toggleWakelock,)
+            )
         ],
         // centerTitle: true,
       ),
