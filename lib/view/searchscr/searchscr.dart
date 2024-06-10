@@ -35,6 +35,8 @@
 //   }
 // }
 import 'package:books_app/view/bookdetails/bookdetails.dart';
+import 'package:books_app/view/homescr/card/book%20_card.dart';
+import 'package:books_app/view/homescr/tabs/all_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -72,10 +74,12 @@ class _SearchScrState extends State<SearchScr> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
         title: TextField(
           controller: _searchController,
           decoration: InputDecoration(
+            prefixIcon: Icon(Icons.search),
             hintText: 'Search...',
             border: InputBorder.none,
           ),
@@ -94,32 +98,19 @@ class _SearchScrState extends State<SearchScr> {
                 if (snapshot.data!.docs.isEmpty) {
                   return Center(child: Text('No results found'));
                 }
-                return ListView.builder(
+                return GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,crossAxisSpacing: 5,mainAxisSpacing: 20),
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     var document = snapshot.data!.docs[index];
                     // Display search results here
                    
-                   return InkWell(
-                    onTap: () {
-                     Navigator.push(context, MaterialPageRoute(builder: (context)=> Bookdetails(email_id: widget.email_id,thumbnail:snapshot.data!.docs[index]['image'] ,title:snapshot.data!.docs[index]['title'] ,author: snapshot.data!.docs[index]['auth'],bookfile:snapshot.data!.docs[index]['file'] ,bookid: snapshot.data!.docs[index].id)));
-                    },
-                     child: Container(
-                      child: Row(
-                        children: [
-                           Container(
-                            height: 100,
-                            child: Image.network(document['image'])),
-                          Column(
-                            children: [
-                              Text(document['title']),
-                              Text(document['auth']),
-                             
-                            ],
-                          ),
-                        ],
-                      ),
-                     ),
+                   return Book_card(
+                    title: document['title'],
+                    author: document['auth'],
+                    thumbnail: document['image'],
+    bookfile: document['file'],
+    bookid: document.id,
                    );
                     // return ListTile(
                     //   title: Text(document['title']),
@@ -130,7 +121,7 @@ class _SearchScrState extends State<SearchScr> {
                 );
               },
             )
-          : Center(child: Text('Enter a search query')),
+          : All_tab_scr(),
     );
   }
 }

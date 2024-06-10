@@ -2,6 +2,7 @@
 
 import 'package:books_app/view/homescr/tabs/all_tab.dart';
 import 'package:books_app/view/homescr/tabs/for_u_tab.dart';
+import 'package:books_app/view/homescr/tabs/latest_tab.dart';
 import 'package:books_app/view/login/login.dart';
 import 'package:books_app/view/searchscr/searchscr.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,7 +25,7 @@ class _HomeScrState extends State<HomeScr> {
   Widget build(BuildContext context) {
    
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         
         appBar: AppBar(
@@ -157,9 +158,7 @@ class _HomeScrState extends State<HomeScr> {
                           });
                         },
                         tabs: [
-                          Tab(
-                            text: "FOR U"
-                          ),
+                        
                           Tab(
                             text: "ALL"
                           ),
@@ -170,11 +169,12 @@ class _HomeScrState extends State<HomeScr> {
                         Container(
                      height: MediaQuery.sizeOf(context).height *.9,
                           child: TabBarView(children: [
-                           For_u_tab(),
+                           
                            All_tab_scr(email_id: user!.email),
                             // Container
                             // (decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/introbg.jpg",),fit: BoxFit.cover)),),
-                            Container(decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/introbg.jpg",),fit: BoxFit.cover)),),
+                          
+                          LatestDataScreen(),  // Container(decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/introbg.jpg",),fit: BoxFit.cover)),),
                           ]),
                         )
             ],

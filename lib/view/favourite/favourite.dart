@@ -4,43 +4,33 @@ import 'package:books_app/view/bookdetails/bookdetails.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class FavTabScreen extends StatefulWidget {
-  const FavTabScreen({super.key, this.email_id});
-  final  email_id;
+  const FavTabScreen({Key? key,this.email_id}) : super(key: key);
+  final email_id;
 
   @override
   State<FavTabScreen> createState() => _FavTabScreenState();
 }
 
 class _FavTabScreenState extends State<FavTabScreen> {
-  String? bookurl;
-  final user = FirebaseAuth.instance.currentUser;
-
-  Query? query;
-  List<Map<String, dynamic>> pdfdata = [];
+  late Query query;
 
   @override
   void initState() {
     super.initState();
-    // getpdf();
+    final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      query = FirebaseFirestore.instance.collection('favourites')
-      .where("userid", isEqualTo: user!.email);
-      
+      query = FirebaseFirestore.instance.collection('favourites').where("userid", isEqualTo: user.email);
     } else {
       log('User email_id is null');
     }
   }
 
-  // void getpdf() async {
-  //   final pdfres = await FirebaseFirestore.instance.collection('books').get();
-  //   pdfdata = pdfres.docs.map((e) => e.data()).toList();
-  //   setState(() {});
-  // }
-Future<void> deleteDocumentByField({required String userid,required dynamic value,}) async {
+  Future<void> deleteDocumentByField({
+    required String userid,
+    required dynamic value,
+  }) async {
     CollectionReference collectionRef = FirebaseFirestore.instance.collection("favourites");
 
     QuerySnapshot querySnapshot = await collectionRef.where("title", isEqualTo: value).where("userid", isEqualTo: userid).get();
@@ -60,7 +50,7 @@ Future<void> deleteDocumentByField({required String userid,required dynamic valu
     return Scaffold(
       body: query != null
           ? StreamBuilder(
-              stream: query!.snapshots(),
+              stream: query.snapshots(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
                   return Center(child: Text('Something went wrong'));
@@ -68,6 +58,9 @@ Future<void> deleteDocumentByField({required String userid,required dynamic valu
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 }
+
+                var documents = snapshot.data!.docs;
+
                 return Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
@@ -77,9 +70,10 @@ Future<void> deleteDocumentByField({required String userid,required dynamic valu
                   ),
                   child: Column(
                     children: [
+                      SizedBox(height: 20),
                       Expanded(
                         child: ListView.builder(
-                          itemCount: snapshot.data!.docs.length,
+                          itemCount: documents.length,
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () {
@@ -87,14 +81,22 @@ Future<void> deleteDocumentByField({required String userid,required dynamic valu
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => Bookdetails(
+                                      bookid: documents[index]['bookId'],
                                       email_id: widget.email_id,
-                                      thumbnail: snapshot.data!.docs[index]['image'],
-                                      title: snapshot.data!.docs[index]['title'],
-                                      author: snapshot.data!.docs[index]['auth'],
-                                      bookfile: snapshot.data!.docs[index]['file'],
-                                      bookid: snapshot.data!.docs[index].id,
+                                      thumbnail: documents[index]['image'],
+                                      title: documents[index]['title'],
+                                      author: documents[index]['auth'],
+                                      bookfile: documents[index]['file'],
+                                      isFavorite: true,
+                                      // bookid: documents[index].id,
                                     ),
                                   ),
+                                );
+                              },
+                              onLongPress: () {
+                                deleteDocumentByField(
+                                  userid: documents[index]['userid'],
+                                  value: documents[index]['title'],
                                 );
                               },
                               child: Padding(
@@ -124,37 +126,41 @@ Future<void> deleteDocumentByField({required String userid,required dynamic valu
                                               ),
                                               height: 140,
                                               width: double.infinity,
-                                              // child: Row(
-                                              //   children: [
-                                              //     Column(
-                                              //       children: [
-                                              //         Text(
-                                              //           snapshot.data!.docs[index]['title']
-                                              //               .toString()
-                                              //               .toUpperCase(),
-                                              //           style: TextStyle(
-                                              //             fontWeight: FontWeight.w900,
-                                              //             fontSize: 20,
-                                              //             color: Colors.deepOrange,
-                                              //           ),
-                                              //         ),
-                                              //         Text(snapshot.data!.docs[index]['auth']),
-                                                     
-                                              //       ],
-                                              //     ),
-                                              //   ],
-                                              // ),
                                             ),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: ClipRRect(
                                               borderRadius: BorderRadius.circular(20),
-                                              child: Image.network(
-                                                snapshot.data!.docs[index]['image'],
-                                                fit: BoxFit.fitHeight,
-                                                width: 120,
-                                              ),
+                                              child:documents[index]['image'] != null
+                    ? Image.network(
+                        documents[index]['image']!,
+                        height: 150,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return 
+                          ColorFiltered(
+            colorFilter: ColorFilter.matrix(<double>[
+              0.2126, 0.7152, 0.0722, 0, 0,  // red contribution
+              0.2126, 0.7152, 0.0722, 0, 0,  // green contribution
+              0.2126, 0.7152, 0.0722, 0, 0,  // blue contribution
+              0, 0, 0, 1, 0,                // alpha
+            ]),
+            child: 
+                          Image.asset("assets/weblogo.png", height: 150, fit: BoxFit.cover));
+                        },
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                  : null,
+                            ),
+                          );
+                        },
+                      )
+                    : Image.asset("assets/weblogo.png", height: 150, fit: BoxFit.cover),
                                             ),
                                           ),
                                           Positioned(
@@ -163,9 +169,7 @@ Future<void> deleteDocumentByField({required String userid,required dynamic valu
                                             child: Column(
                                               children: [
                                                 Text(
-                                                  snapshot.data!.docs[index]['title']
-                                                      .toString()
-                                                      .toUpperCase(),
+                                                  documents[index]['title'].toString().toUpperCase(),
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w900,
                                                     fontSize: 20,
@@ -180,25 +184,27 @@ Future<void> deleteDocumentByField({required String userid,required dynamic valu
                                             left: 150,
                                             child: Column(
                                               children: [
-                                                Text(snapshot.data!.docs[index]['auth']),
+                                                Text(documents[index]['auth']),
                                               ],
                                             ),
                                           ),
-                                          Positioned(
-                                            top: 45,
-                                            right: 20,
-                                            child: Column(
-                                              children: [
-                                                IconButton(
-                                                  onPressed: () {
-
-                                                     deleteDocumentByField(userid: snapshot.data!.docs[index]['userid'],value: snapshot.data!.docs[index]['title'] ) ; 
-                                                  },
-                                                  icon: Icon(Icons.remove_circle),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
+                                          // Positioned(
+                                          //   top: 45,
+                                          //   right: 20,
+                                          //   child: Column(
+                                          //     children: [
+                                          //       IconButton(
+                                          //         onPressed: () {
+                                          //           deleteDocumentByField(
+                                          //             userid: documents[index]['userid'],
+                                          //             value: documents[index]['title'],
+                                          //           );
+                                          //         },
+                                          //         icon: Icon(Icons.remove_circle),
+                                          //       ),
+                                          //     ],
+                                          //   ),
+                                          // ),
                                         ],
                                       ),
                                     ),

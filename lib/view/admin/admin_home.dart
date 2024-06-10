@@ -29,6 +29,7 @@ class _AdminHomeScrState extends State<AdminHomeScr> {
   File? filetodisplay;
    var currentTabIndex = 0;
    var bookurl;
+   var imgurl;
   
    final user = FirebaseAuth.instance.currentUser;
      XFile? file;
@@ -201,6 +202,7 @@ TextEditingController title = TextEditingController();
         children: [
           ElevatedButton(onPressed: ()async{
             final result = await FilePicker.platform.pickFiles();
+            // ignore: unused_label
             type: FileType.any;
             setState(() {
               
@@ -214,9 +216,9 @@ TextEditingController title = TextEditingController();
             var folderrefb = storagerefb.child("Books");
             var uploadrefb = folderrefb.child(pickedfile!.name);
             await uploadrefb.putFile(File(pickedfile!.path.toString()));
-            url = await uploadrefb.getDownloadURL();
-             bookurl = url;
-            log(url.toString());
+            bookurl = await uploadrefb.getDownloadURL();
+            
+            log(bookurl.toString());
             print("name:${pickedfile?.name}");
             print("name:${pickedfile?.bytes}");
             print("name:${pickedfile?.size}");
@@ -254,8 +256,8 @@ var folderref = storageref.child("Images");
 // upload ref
 var uploadref = folderref.child("$uniquename.jpg");
 await uploadref.putFile(File(file!.path));
- url = await uploadref.getDownloadURL();
-log(url.toString());
+ imgurl = await uploadref.getDownloadURL();
+log(imgurl.toString());
                     }
                     
           }, child: Column(
@@ -298,7 +300,7 @@ log(url.toString());
                                     ),
                                  
                   ),
-                   ElevatedButton(onPressed: (){CollectionRef.add({"title": title.text, "auth":author.text,"image":url ?? "","file": bookurl ?? ""});
+                   ElevatedButton(onPressed: (){CollectionRef.add({'timestamp': FieldValue.serverTimestamp(),"title": title.text, "auth":author.text,"image":url ?? "","file": bookurl ?? ""});
                 title.clear();
                 author.clear();
                 url == null;

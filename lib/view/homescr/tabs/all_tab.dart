@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:books_app/view/bookdetails/bookdetails.dart';
+import 'package:books_app/view/homescr/card/book%20_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -50,7 +51,9 @@ void initState(){
    
     return  Scaffold(
       
-      body: StreamBuilder(stream: CollectionRef.snapshots(),builder: (context, snapshot){
+      body: 
+      
+      StreamBuilder(stream: CollectionRef.snapshots(),builder: (context, snapshot){
           if(snapshot.hasError){
             return Center(child: Text("something wrong"),);
           }
@@ -58,141 +61,36 @@ void initState(){
             return Center(child: CircularProgressIndicator(),);
           }
       return Container
+
                              (
+                              
                                decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/introbg.jpg",),fit: BoxFit.cover),),
                               child: Column(
                                 children: [
+                                  SizedBox(height: 10,),
                                   Expanded(
-                                    child:   ListView.builder(
+                                    
+                                    child:   GridView.builder(
+                                      shrinkWrap: true,
+                                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:2,crossAxisSpacing: 10,mainAxisSpacing: 45),
                                                     itemCount:snapshot.data!.docs.length ,
                                                     itemBuilder: (context, index){
-                                                    return InkWell(
-                                                      onTap: () {
-                                                       
-                                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Bookdetails(email_id: widget.email_id,thumbnail:snapshot.data!.docs[index]['image'] ,title:snapshot.data!.docs[index]['title'] ,author: snapshot.data!.docs[index]['auth'],bookfile:snapshot.data!.docs[index]['file'] ,bookid: snapshot.data!.docs[index].id)));
-                                                      },
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.all(8.0),
-                                                        child: Column(
-                                                          children: [
-                                                            // SizedBox(height: 10,),
-                                                            Container(
-                                                              height: 160,
-                                                              width: 400,
-                                                              child: Stack(
-                                                                children: <Widget>[
-                                                                   Positioned(
-                                                                    bottom: 0,
-                                                                    left: 0,
-                                                                    right: 0,
-                                                                     child: Container(
-                                                                      decoration: BoxDecoration(color: Color.fromARGB(205, 255, 255, 255),borderRadius: BorderRadius.circular(29),boxShadow: [BoxShadow(offset:Offset(0, 20),blurRadius: 33,color: Colors.grey.withOpacity(.84) )]),
-                                                                      height: 140,
-                                                                      width: double.infinity,
-                                                                      child: Row(
-                                                                        children: [
-                                                                                                      //                             Padding(
-                                                                                                      // padding: const EdgeInsets.all(8.0),
-                                                                                                      // child: Image.network(snapshot.data!.docs[index]['image'],fit: BoxFit.fitHeight,width: 150,),
-                                                                                                      //                             ),
-                                                                          Column(
-                                                                                                      children: [
-                                                                          //                               Text(snapshot.data!.docs[index]['title'].toString().toUpperCase(),style: TextStyle(fontWeight: FontWeight.w900,fontSize: 20,color: Colors.deepOrange),),
-                                                                          // Text(snapshot.data!.docs[index]['auth']),
-                                                                                                      ],
-                                                                          )
-                                                                          // Text(snapshot.data!.docs[index]['title']),
-                                                                          // Text(snapshot.data!.docs[index]['auth']),
-                                                                          // ElevatedButton(onPressed: (){}, 
-                                                                          // child: SfPdfViewer.network(snapshot.data!.docs[index]['file'])  
-                                                                          // )
-                                                                          // PDFView()
-                                                                        ],
-                                                                                                                          
-                                                                                                                                       ),
-                                                                                                                          ),
-                                                                   ),
-  Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: Image.network(snapshot.data!.docs[index]['image'],fit: BoxFit.fitHeight,width: 120,)),
-  ),
-                Positioned(
-                  top: 65,
-                  left: 150,
-                  child: Column(children: [
-    Text(snapshot.data!.docs[index]['title'].toString().toUpperCase(),style: TextStyle(fontWeight: FontWeight.w900,fontSize: 20,color: Colors.deepOrange),),
-                  
+                                                    return Book_card
+                                                    (
+thumbnail: snapshot.data!.docs[index]['image'] ,
+title: snapshot.data!.docs[index]['title'],
+author: snapshot.data!.docs[index]['auth'],
+bookfile:snapshot.data!.docs[index]['file'] ,
+bookid: snapshot.data!.docs[index].id,
+email_id: user!.email,
 
-                                                                                                                         ]
-                                                                                                                         ,)
-                                                                                                                         ),
-   Positioned(
-                  top: 95,
-                  left: 150,
-                  child: Column(children: [
-   
-                  Text(snapshot.data!.docs[index]['auth']),
 
-                                                                                                                         ]
-                                                                                                                         ,)
-                                                                                                                         ),
- Positioned(
-                  top: 45,
-                 right: 20,
-                  child: Column(children: [
-    
-                 IconButton(onPressed: (){
-
- }, icon: Icon(Icons.favorite_border_outlined))
-
-                                                                                                                         ]
-                                                                                                                         ,)
-                                                                                                                         )
-                                                            
-                                                            
-                                                                ]
-                                                                ),
-                                                            ),
-                                                                 
-                                                            
-                                
-                                                          ],
-                                                        ),
-                                                      
-                                                      // child: ListTile(
-                                                       
-                                                      //   leading: Image.network(snapshot.data!.docs[index]['image']),
-                                                      //   title: Text(snapshot.data!.docs[index]['title']),
-                                                      //   subtitle: Text(snapshot.data!.docs[index]['auth']),
-                                                        
-                                                        
-                                                      //       //                       trailing: Row(
-                                                      //       //                         mainAxisSize: MainAxisSize.min,
-                                                      //       //                         children: [
-                                                      //       //                         //   IconButton(onPressed: (){
-                                                      //       //                         //   log(snapshot.data!.docs[index].id);
-                                                      //       //                         //   CollectionRef.doc(snapshot.data!.docs[index].id).update({"title":title.text,"author":author.text,
-                                                      //       //                         //   "url":url ?? ""
-                                                      //       //                         //   });
-                                                      //       //                         //   name.clear();
-                                                      //       //                         //   ph.clear();
-                                                      //       //                         // }, icon: Icon(Icons.edit)),
-                                                      //       //                         IconButton(onPressed: (){
-                                                      //       // CollectionRef.doc(snapshot.data!.docs[index].id).delete();
-                                                            
-                                                            
-                                                      //       //                         }, icon: Icon(Icons.delete))],
-                                                          
-                                                      //       //                       ),
-                                                      // ),
-                                                     ) );
+                                                    );
                                                   }
                                                   ),  
                                     
                                   ),
-                                  SizedBox(height: 50,)
+                                  SizedBox(height: 40,)
                                 ],
                               ),
                               );
