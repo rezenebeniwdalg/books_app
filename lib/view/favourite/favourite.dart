@@ -77,7 +77,7 @@ class _FavTabScreenState extends State<FavTabScreen> {
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () {
-                                Navigator.pushReplacement(
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => Bookdetails(
@@ -86,7 +86,7 @@ class _FavTabScreenState extends State<FavTabScreen> {
                                       thumbnail: documents[index]['image'],
                                       title: documents[index]['title'],
                                       author: documents[index]['auth'],
-                                      bookfile: documents[index]['file'],
+                                      bookfile: documents[index]['bookfile'],
                                       // isfav: true,
                                       // bookid: documents[index].id,
                                       // isFavorite: true,
@@ -96,10 +96,19 @@ class _FavTabScreenState extends State<FavTabScreen> {
                                 );
                               },
                               onLongPress: () {
-                                deleteDocumentByField(
+                                InkWell(
+                                  onTap: (){
+                                    deleteDocumentByField(
                                   userid: documents[index]['userid'],
                                   value: documents[index]['title'],
                                 );
+                                  },
+                                  child: Container(
+                                    color: const Color.fromARGB(102, 255, 193, 7),
+                                  
+                                  ),
+                                );
+                                
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),

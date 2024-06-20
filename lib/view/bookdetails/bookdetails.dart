@@ -1,11 +1,9 @@
 // import 'dart:developer';
-
 // import 'package:books_app/view/bookdetails/bookread.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
 // import 'package:hive_flutter/hive_flutter.dart';
-
 // class Bookdetails extends StatefulWidget {
 //   const Bookdetails({
 //     Key? key,
@@ -16,49 +14,39 @@
 //     this.bookfile,
 //     this.bookid,
 //   }) : super(key: key);
-
 //   final String? thumbnail;
 //   final String? title;
 //   final String? author;
 //   final String? bookfile;
 //   final String? bookid;
 //   final String? email_id;
-
 //   @override
 //   State<Bookdetails> createState() => _BookdetailsState();
 // }
-
 // class _BookdetailsState extends State<Bookdetails> {
 //   final User? user = FirebaseAuth.instance.currentUser;
-
 //   var box = Hive.box('recent');
 //   bool isfav = false;
-
 //   @override
 //   void initState() {
 //     super.initState();
 //     checkIfFavorite();
 //     setState(() {
-      
 //     });
 //     // _toggleFavorite(userid: widget.email_id.toString(), value: widget.title.toString());
 //   }
-
 //   Future<void> checkIfFavorite() async {
 //     log('Checking if book is favorite');
 //      QuerySnapshot snapshot = await FirebaseFirestore.instance
 //         .collection('favourites')
 //         .where("userid", isEqualTo: user?.email)
-
 //         .where("bookfile", isEqualTo: widget.bookfile)
 //         .get();
-
 //     if (snapshot.docs.isNotEmpty) {
 //       // setState(() {
 //         isfav = true;
 //          log('Book is marked as favorite');
 //       // });
-     
 //     } else
 //     if(snapshot.docs.isEmpty)
 //      {
@@ -66,10 +54,8 @@
 //         isfav = false;
 //         log('Book is not marked as favorite');
 //       });
-     
 //     }
 //   }
-
 //   Future<void> _toggleFavorite({
 //     required String userid,
 //     required String value,
@@ -80,7 +66,6 @@
 //         .where("userid", isEqualTo: widget.email_id)
 //         .where("bookfile", isEqualTo: widget.bookfile)
 //         .get();
-
 //     if (snapshot.docs.isEmpty) {
 //       CollectionRef.add({
 //         "userid": widget.email_id,
@@ -101,16 +86,13 @@
 //       });
 //     }
 //   }
-
 //   CollectionReference CollectionRef =
 //       FirebaseFirestore.instance.collection("favourites");
-
 //   Future<void> deleteDocumentByField(String userid, dynamic value) async {
 //     QuerySnapshot querySnapshot = await CollectionRef
 //         .where("title", isEqualTo: value)
 //         .where("userid", isEqualTo: userid)
 //         .get();
-
 //     if (querySnapshot.docs.isNotEmpty) {
 //       for (QueryDocumentSnapshot doc in querySnapshot.docs) {
 //         await doc.reference.delete();
@@ -120,7 +102,6 @@
 //       log('No document found with "title" = $value');
 //     }
 //   }
-
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
@@ -231,6 +212,7 @@
 //     );
 //   }
 // }
+
 import 'dart:developer';
 
 import 'package:books_app/view/bookdetails/bookread.dart';
@@ -325,6 +307,10 @@ class _BookdetailsState extends State<Bookdetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: Icon(Icons.arrow_back_ios_new_rounded),),
         centerTitle: true,
         title: Text(widget.title?.toUpperCase() ?? 'No Title'),
       ),
@@ -394,7 +380,8 @@ class _BookdetailsState extends State<Bookdetails> {
                       icon: Icon(
                         isfav
                             ? Icons.favorite_rounded
-                            : Icons.favorite_border_outlined,
+                            : Icons.favorite_border_outlined,color: isfav ? Colors.red : Colors.grey,
+                            size: 40,
                       ),
                     ),
                   ),
