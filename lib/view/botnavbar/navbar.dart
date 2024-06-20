@@ -17,7 +17,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
  
   List<Widget> screesList = [
     HomeScr(),
-   SearchScr(),
+  //  SearchScr(),
   FavTabScreen(),
    recentscr(),
    Container(color: Colors.pinkAccent,)
@@ -28,7 +28,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   Widget build(BuildContext context) {
     final items = <Widget>[
       Icon(Icons.home),
-      Icon(Icons.search),
+      // Icon(Icons.search),
       Icon(Icons.favorite_border_outlined),
       Icon(Icons.history),
        Icon(Icons.settings),

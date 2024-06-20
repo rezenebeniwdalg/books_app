@@ -1,4 +1,5 @@
 import 'package:books_app/controller/recentcontroller.dart';
+import 'package:books_app/view/bookdetails/bookread.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -77,22 +78,47 @@ void initState(){
             itemBuilder: (context, index) {
             final currentkey = recentcontroller.recentlistkeys[index];
             final currentelement =recentcontroller.box.get(currentkey);
-            return Container(
-              height: 100,
-             
-              child: Row(children: [
-                Image.network(currentelement['image'],height: 100,width: 100,fit: BoxFit.cover,),
-                Text(currentelement['title']),
-                Text(currentelement['author']),
-                // IconButton(onPressed: (){
-                //   recentcontroller.box.delete(currentkey);
-                //   recentcontroller.deleterecent(currentkey);
-                //   setState(() {
+            return InkWell(
+              onTap: () {
+                Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => bookread(
+                            bookfile: currentelement['url'],
+                            title_: currentelement['title'],
+                            // author: widget.author,
+                            // image: widget.thumbnail,
+                          ),
+                        ),
+                      );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: 50,
+                 
+                  child: Row(children: [
+                    CircleAvatar(
+                      child: Image.network(currentelement['image'],height: 100,width: 100,fit: BoxFit.cover,),
+                    ),
+                    SizedBox(width: 10),
+                    Text(currentelement['title']),
+                    SizedBox(width: 10),
+                    Text('|'),
+                    SizedBox(width: 10),
+                    Text(currentelement['author']),
                     
-                //   });
-                // }, icon: Icon(Icons.remove_circle_outline))
-                
-              ],),
+                    // IconButton(onPressed: (){
+                    //   recentcontroller.box.delete(currentkey);
+                    //   recentcontroller.deleterecent(currentkey);
+                    //   setState(() {
+                        
+                    //   });
+                    // }, icon: Icon(Icons.remove_circle_outline))
+                    
+                  ],),
+                ),
+              ),
             );
           }),
         ),

@@ -170,7 +170,7 @@ class _HomeScrState extends State<HomeScr> {
                      height: MediaQuery.sizeOf(context).height *.9,
                           child: TabBarView(children: [
                            
-                           All_tab_scr(email_id: user!.email),
+                           SearchScr(email_id: user!.email),
                             // Container
                             // (decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/introbg.jpg",),fit: BoxFit.cover)),),
                           
