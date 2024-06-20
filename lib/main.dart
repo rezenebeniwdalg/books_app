@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           create: (context) => logcrcontroller(),
         ),
          ChangeNotifierProvider(
-      create: (context) => FavoritesProvider(),),
+      create: (_) => FavoritesProvider(),),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

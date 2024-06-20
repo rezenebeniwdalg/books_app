@@ -54,6 +54,7 @@ dependencies:
   hive_flutter: ^1.1.0
   wakelock_plus: ^1.2.5
   shared_preferences: ^2.2.3
+  get: ^4.6.6
   
 
 dev_dependencies:

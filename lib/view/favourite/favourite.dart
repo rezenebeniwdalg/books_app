@@ -77,17 +77,19 @@ class _FavTabScreenState extends State<FavTabScreen> {
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () {
-                                Navigator.push(
+                                Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => Bookdetails(
-                                      bookid: documents[index]['bookId'],
+                                      // bookid: documents[index]['bookId'],
                                       email_id: widget.email_id,
                                       thumbnail: documents[index]['image'],
                                       title: documents[index]['title'],
                                       author: documents[index]['auth'],
                                       bookfile: documents[index]['file'],
-                                      isFavorite: true,
+                                      // isfav: true,
+                                      // bookid: documents[index].id,
+                                      // isFavorite: true,
                                       // bookid: documents[index].id,
                                     ),
                                   ),

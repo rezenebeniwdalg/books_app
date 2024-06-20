@@ -1,14 +1,48 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoritesProvider extends ChangeNotifier {
   final Map<String, bool> _favoriteStatus = {};
+ late SharedPreferences _prefs;
+FavoritesProvider() {
+    _initSharedPreferences();
+  }
+
+  Future<void> _initSharedPreferences() async {
+    _prefs = await SharedPreferences.getInstance();
+    _loadFavoriteStatus();
+  }
+   void _loadFavoriteStatus() {
+    String? favoriteStatusJson = _prefs.getString('favoriteStatus');
+    if (favoriteStatusJson!= null) {
+      Map<String, dynamic> favoriteStatusMap = jsonDecode(favoriteStatusJson);
+      favoriteStatusMap.forEach((key, value) {
+        _favoriteStatus[key] = value as bool;
+      });
+    }
+  }
+
+
 
   bool isFavorite(String bookId) {
     return _favoriteStatus[bookId] ?? false;
   }
+  @override
+  void dispose() {
+    _saveFavoriteStatus();
+    super.dispose();
+  }
+
+  Future<void> _saveFavoriteStatus() async {
+    String favoriteStatusJson = jsonEncode(_favoriteStatus);
+    await _prefs.setString('favoriteStatus', favoriteStatusJson);
+  }
+
+  
 
   final CollectionReference collectionRef = FirebaseFirestore.instance.collection("favourites");
 
@@ -23,11 +57,11 @@ class FavoritesProvider extends ChangeNotifier {
     if (_favoriteStatus[bookId] == true) {
       await _removeFromFavorites(userid, bookId, title);
       _favoriteStatus[bookId] = false;
-      log('Removed from favorites');
+      // log('Removed from favorites');
     } else {
       await _addToFavorites(userid, bookId, title, author, image, file);
       _favoriteStatus[bookId] = true;
-      log('Added to favorites');
+      // log('Added to favorites');
     }
     notifyListeners();
   }
@@ -53,11 +87,12 @@ class FavoritesProvider extends ChangeNotifier {
     if (querySnapshot.docs.isNotEmpty) {
       for (QueryDocumentSnapshot doc in querySnapshot.docs) {
         await doc.reference.delete();
-        log('Document with "bookId" = $bookId and "title" = $title deleted');
+        // log('Document with "bookId" = $bookId and "title" = $title deleted');
         
       }
-    } else {
-      log('No document found with "bookId" = $bookId and "title" = $title');
-    }
+    } 
+    // else {
+    //   log('No document found with "bookId" = $bookId and "title" = $title');
+    // }
   }
 }

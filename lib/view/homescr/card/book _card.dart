@@ -1,8 +1,10 @@
+import 'package:books_app/controller/favcontroller.dart';
 import 'package:books_app/view/bookdetails/bookdetails.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class Book_card extends StatefulWidget {
   const Book_card({super.key,this.email_id,this.author,this.bookfile,this.bookid,this.thumbnail,this.title});
@@ -19,6 +21,34 @@ class Book_card extends StatefulWidget {
 }
 
 class _Book_cardState extends State<Book_card> {
+
+// void func(){
+//    context.read<favcontroller>().isfav(
+//                   context: context,
+//                   email_id: widget.email_id,
+//                   author: widget.author,
+//                   bookfile: widget.bookfile,
+//                   bookid: widget.bookid,
+//                   thumbnail: widget.thumbnail,
+//                 ).then((value)async{
+//                   if(value == true){
+//                     isfav = true;
+//                     ScaffoldMessenger.of(context).showSnackBar(
+//                       SnackBar(
+//                         content: Text("Book is already added to your favorite"),
+//                       ),
+//                     );
+//                   }
+//                   else{
+//                     isfav = false;
+                   
+                   
+//                   }
+//                 });
+
+// }
+
+
   List<Map<String, dynamic>> pdfdata = [];
   void getpdf()async
 {
@@ -30,6 +60,8 @@ setState(() {
 }
  CollectionReference CollectionRef = FirebaseFirestore.instance.collection("books");
      final user = FirebaseAuth.instance.currentUser;
+    //  bool? isfav;
+
   @override
   Widget build(BuildContext context) {
    
@@ -37,7 +69,40 @@ setState(() {
       
       child: InkWell(
             onTap: () {
-               Navigator.push(context, MaterialPageRoute(builder: (context)=> Bookdetails(email_id: widget.email_id,thumbnail: widget.thumbnail,title:widget.title ,author: widget.author,bookfile:widget.bookfile,bookid: widget.bookid)));
+
+                // context.read<favcontroller>().isfav(
+                //   context: context,
+                //   email_id: widget.email_id,
+                //   author: widget.author,
+                //   bookfile: widget.bookfile,
+                //   bookid: widget.bookid,
+                //   thumbnail: widget.thumbnail,
+                // ).then((value)async{
+                //   if(value == true){
+                //     isfav = true;
+                //     ScaffoldMessenger.of(context).showSnackBar(
+                //       SnackBar(
+                //         content: Text("Book is already added to your favorite"),
+                //       ),
+                //     );
+                //   }
+                //   else{
+                //     isfav = false;
+                //   }
+                // });
+
+
+               Navigator.push(context, MaterialPageRoute(builder: (context)=> Bookdetails(
+                email_id: widget.email_id,
+                thumbnail: widget.thumbnail,
+                title:widget.title ,
+                author: widget.author,
+                bookfile:widget.bookfile,
+                bookid: widget.bookid,
+              //  isFavorite: isfav,
+               )
+               )
+               );
               },
               child:  
               Column(
